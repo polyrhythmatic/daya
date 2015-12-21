@@ -4,14 +4,14 @@
 <head>
 	<title>Daya</title>
 	<script src="assignment8.js"></script>
-	<script src="daya_tris.js"></script>
+	<script src="daya_quad.js"></script>
 </head>
 
 <body>
 	<table>
 		<tr>
 			<td>
-				<canvas id="canvas1" width="600" height="600">
+				<canvas id="canvas1" width="1200" height="1200">
 			</td>
 			<!-- <td width="50"></td>
 			<td valign="top">
@@ -132,8 +132,8 @@
 
 	   function tick() {
 		  var turn = (new Date()).getTime() / 1000.;
-		  var cos = Math.cos(turn);
-		  var sin = Math.sin(turn);
+		  var cos = 1;//Math.cos(turn);
+		  var sin = 0;//Math.sin(turn);
 		  var adjust = gl.canvas.height / gl.canvas.width;
 		  var matrix = [ adjust*cos,  0,sin, .1*sin,
 								  0,  1,  0,  0,
