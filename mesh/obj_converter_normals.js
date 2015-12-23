@@ -11,7 +11,7 @@ var math = require("mathjs")
 
 var fs = require("fs");
 
-var filename = "daya_quad";
+var filename = "daya_sing";
 
 
 fs.readFile( __dirname + '/' + filename + '.obj', function (err, data) {
@@ -104,11 +104,37 @@ function splitObjects(data){
 				}
 				createTriStrip(p1, p2);
 			}
+
+			var p1 = {pos : [], normals : [], tex : []};
+			var p2 = {pos : [], normals : [], tex : []};
+
+			var vInd1 = faceTemp[0].split("/")[0] - 1;
+			var nInd1 = faceTemp[0].split("/")[2] - 1;
+			var tInd1 = faceTemp[0].split("/")[1] - 1;
+
+			var vInd2 = faceTemp[faceTemp.length - 1].split("/")[0] - 1;
+			var nInd2 = faceTemp[faceTemp.length - 1].split("/")[2] - 1;
+			var tInd2 = faceTemp[faceTemp.length - 1].split("/")[1] - 1;
+
+			for(var k = 0; k < 3; k ++){
+				p1.pos.push(parseFloat(wireframe.vertices[vInd1][k]));
+				p2.pos.push(parseFloat(wireframe.vertices[vInd2][k]));
+			}
+
+			for(var k = 0; k < 3; k ++){
+				p1.normals.push(parseFloat(wireframe.normals[nInd1][k]));
+				p2.normals.push(parseFloat(wireframe.normals[nInd2][k]));
+			}
+			for(var k = 0; k < 2; k++){
+				p1.tex.push(parseFloat(wireframe.tex[tInd1][k]));
+				p2.tex.push(parseFloat(wireframe.tex[tInd2][k]));
+			}
+			createTriStrip(p1, p2);
 		}
 	}
 	console.log(outputArray.length);
 
-	fs.writeFile("../" + filename + '.js', "var daya = " + JSON.stringify(outputArray), function (err) {
+	fs.writeFile("../" + filename + '.js', "var dayaSing = " + JSON.stringify(outputArray), function (err) {
 		if (err) throw err;
 		console.log('It\'s saved!');
 	});
@@ -145,7 +171,7 @@ function normalizeVertices(verts){
 //they have normal attribute for that pos (len 3 arrays)
 //they have tex coords (len 2 arrays)
 
-var offsetDist = 0.005;
+var offsetDist = 0.0015;
 function createTriStrip(p1, p2){
 	var vDir1 = math.divide(math.subtract(p2.pos, p1.pos), math.norm(math.subtract(p2.pos, p1.pos),3));
 	var vDir2 = math.multiply(vDir1, -1);
